@@ -18,7 +18,7 @@
 ## Description
 
 By default, this module will only install oathtool, a command line utility for
-generating one-time passwords. 
+generating one-time passwords.
 
 Optionally, this module will install the pam_oath and liboath packages from epel
 and configure them. In this case, this module will manage the configurtion for
@@ -49,14 +49,14 @@ it can be used independently:
 ### What oath affects
 
 If configured to install pam_oath, will install the following packages
- 
+
  * `pam_oath`
     Will add `/usr/lib64/security/pam_oath.so`
  * `liboath`
  * `pam` (A dependency of pam_oath)
 
 
-Will manage files in `/etc/liboath` 
+Will manage files in `/etc/liboath`
 
 **WARNING:** While this module will not edit the pam stack, it will manage the
 users and keys _required_ for `pam_oath.so` module functionality. If the pam stack is
@@ -77,24 +77,24 @@ include 'oath'
 ```
 For anything greater than simple installation of oathtool, either
 `simp_options::oath` needs to be set to `true` or `oath::pam_oath` needs to be
-overriden to true. `simp_options::oath` is a global catalyst indicating to 
+overriden to true. `simp_options::oath` is a global catalyst indicating to
 other simp modules (pupmod-simp-ssh and pupmod-simp-pam) that they should
 add pam_oath to their respective pam stacks (system-auth and sshd). On the
-other hand, just enabling `oath::pam_oath` will tell oath to install 
-`pam_oath` and `liboath` from the epel_release repository, as well as 
+other hand, just enabling `oath::pam_oath` will tell oath to install
+`pam_oath` and `liboath` from the epel_release repository, as well as
 write the appropriate configuration files to the `/etc/liboath/` directory.
 
 A default list of users for which totp keys are configured is defined in
 `data/common.yaml` for the module. More details about this can be found in the
 documentation of `manifests/config.pp`. This can be modified in place or
-overriden in puppet or hiera. 
+overriden in puppet or hiera.
 
-For implementation without the corresponding simp modules, the follwing 
+For implementation without the corresponding simp modules, the follwing
 code can be added to most pam stacks.
 
 **WARNING:** Modifying the PAM stack is very dangerous and should not be done on
 a production system. Please take appropriate care to not lock yourself out of
-the system you are modifying. 
+the system you are modifying.
 
 ```
 auth     [success=3 default=ignore] pam_listfile.so item=group sense=allow file=/etc/liboath/exclude_groups.oath
@@ -122,5 +122,5 @@ Please read our [Contribution Guide](http://simp-doc.readthedocs.io/en/stable/co
 
 ### Acceptance tests
 As use of this module by itself should not affect the operation of a system,
-this module contains only a basic acceptance test. The spec tests are much 
-more representative of the functionality of this module. 
+this module contains only a basic acceptance test. The spec tests are much
+more representative of the functionality of this module.

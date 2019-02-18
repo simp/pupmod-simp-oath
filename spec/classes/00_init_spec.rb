@@ -57,7 +57,7 @@ describe 'oath' do
         end
 
         context "oath class with oath enabled users undef" do
-          let(:params) do 
+          let(:params) do
             {
             'oath' => true,
             'oath_users' => :undef,
@@ -67,7 +67,7 @@ describe 'oath' do
         end
 
         context "oath class with oath enabled users undef" do
-          let(:params) do 
+          let(:params) do
             {
             'oath' => true
             }

@@ -11,7 +11,7 @@ describe 'oath' do
 
         context "dont manage users file" do
           let(:params) do
-            { 
+            {
               'oath_users' => :undef,
               'oath' => true,
               'pam' => true,
@@ -21,7 +21,7 @@ describe 'oath' do
           it { is_expected.to_not contain_file('/etc/liboath/users.oath')}
         end
 
-        good_pin  = ['"-"','"+"','1234','12345678'] 
+        good_pin  = ['"-"','"+"','1234','12345678']
         good_user = ['root','s1_mp-simP']
         good_type = ['HOTP','HOTP/T30','HOTP/T60','HOTP/T30/6','HOTP/T3022222/121212','HOTP/6']
         good_key  = ['1234','aasdf1234k']
@@ -34,15 +34,15 @@ describe 'oath' do
             good_type.each { |token_type|
               good_key.each { |user_key|
                 context "Should compile parameters #{token_type}\s#{user}\s#{pin}\s#{user_key}" do
-                  let(:params) do 
+                  let(:params) do
                     {
                       'oath'  => true,
                       'pam' => true,
                       'oath_users' => JSON.parse(%Q[{"#{user}": {"token_type": "#{token_type}", "pin": #{pin}, "secret_key": "#{user_key}"}}])
                     }
                   end
-                  it { 
-                    is_expected.to compile 
+                  it {
+                    is_expected.to compile
                     test_pin = pin.gsub("\"", "")
                     is_expected.to contain_concat_fragment("oath_user_#{user}").with_content(<<-EOM.gsub(/^\s+/,'')
                       #{token_type}\t#{user}\t#{test_pin}\t#{user_key}\n
@@ -58,7 +58,7 @@ describe 'oath' do
           good_type.first { |token_type|
             good_key.first { |user_key|
               context "Should compile and use defaults #{token_type}\t#{user}\t1337\t#{user_key}" do
-                let(:params) do 
+                let(:params) do
                   {
                     'oath'  => true,
                     'pam'   => true,
@@ -104,7 +104,7 @@ describe 'oath' do
             good_type.first { |token_type|
               good_key.first { |user_key|
                 context "Should compile parameters two users and a default" do
-                  let(:params) do 
+                  let(:params) do
                     {
                       'oath'  => true,
                       'pam'   => true,
@@ -112,7 +112,7 @@ describe 'oath' do
                     }
                   end
                   it { is_expected.to compile }
-                  it { 
+                  it {
                     test_pin = pin.gsub("\"", "")
                     is_expected.to contain_concat_fragment("oath_user_#{user}").with_content(<<-EOM.gsub(/^\s+/,'')
                       #{token_type}\t#{user}\t#{test_pin}\t#{user_key}
@@ -130,7 +130,7 @@ describe 'oath' do
         }
         context "Should not compile with bad users" do
           bad_user.each { |user|
-            let(:params) do 
+            let(:params) do
               {
                 'oath'  => true,
                 'pam'   => true,
@@ -142,7 +142,7 @@ describe 'oath' do
         end
         context "Should not compile with bad type" do
           bad_type.each { |token_type|
-            let(:params) do 
+            let(:params) do
               {
                 'oath'  => true,
                 'pam'   => true,
@@ -154,7 +154,7 @@ describe 'oath' do
         end
         context "Should not compile with bad pin" do
           bad_pin.each { |pin|
-            let(:params) do 
+            let(:params) do
               {
                 'oath'  => true,
                 'pam'   => true,
@@ -166,7 +166,7 @@ describe 'oath' do
         end
         context "Should not compile with a bad key" do
           bad_key.each { |user_key|
-            let(:params) do 
+            let(:params) do
               {
                 'oath'  => true,
                 'pam'   => true,

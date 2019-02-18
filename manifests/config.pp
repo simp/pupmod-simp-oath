@@ -1,13 +1,11 @@
-# == Class oath::config
-#
 # This class is called from oath for pam_oath configuration.
-# This class ensures files and directories have the correct 
-# selinux contexts to run (rpm defaults for pam_oath are nonexistant)
+# This class ensures files and directories have the correct
+# selinux contexts to run (rpm defaults for pam_oath are nonexistent)
 # It also parses the oath::oath_users hieradata and calls oath::config::user.pp
 # define to check types and create a concat fragment that will be inserted into
 # the /etc/liboath/users.oath file.
-
-
+#
+# @api private
 class oath::config {
   assert_private()
 
@@ -50,7 +48,7 @@ class oath::config {
       seluser        => 'system_u',
       seltype        => 'var_auth_t',
     }
-    # Checks for a 'defaults' user and interprets as default settings, 
+    # Checks for a 'defaults' user and interprets as default settings,
     # stripping off 'defaults' from the rest of the users
     if $oath::oath_users['defaults'].is_a(Hash) {
       $defaults = $oath::oath_users['defaults']
@@ -71,8 +69,8 @@ class oath::config {
       }
 
       oath::config::user {
-        default:  *       => $defaults;
-        $some_user: *     => $args;
+        default: * => $defaults;
+        $some_user: * => $args;
       }
     }
   }
