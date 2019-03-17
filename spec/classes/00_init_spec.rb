@@ -26,22 +26,6 @@ describe 'oath' do
       'seluser' => 'system_u',
       'seltype' => 'var_auth_t',
     })}
-    it { is_expected.to contain_file('/etc/liboath/exclude_users.oath').with({
-      'ensure'  => 'file',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0644',
-      'seluser' => 'system_u',
-      'seltype' => 'var_auth_t',
-    })}
-    it { is_expected.to contain_file('/etc/liboath/exclude_groups.oath').with({
-      'ensure'  => 'file',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0644',
-      'seluser' => 'system_u',
-      'seltype' => 'var_auth_t',
-    })}
   end
 
   context 'supported operating systems' do

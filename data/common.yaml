@@ -14,6 +14,12 @@
 #
 # Specifics on allowed types can be found in `manifests/config/user.pp`
 
+oath::oath_exclude_users:
+  - root
+  - simp
+
+oath::oath_exclude_groups:
+  - root
 
 oath::oath_users:
   defaults:

@@ -20,6 +20,35 @@ describe 'oath' do
           it { is_expected.to compile }
           it { is_expected.to_not contain_file('/etc/liboath/users.oath')}
         end
+        context "Should compile parameters exclude arrays defined" do
+          let(:params) do
+            {
+              'oath'  => true,
+              'pam' => true,
+              'oath_exclude_users' => ['root', 'simp'],
+              'oath_exclude_groups' => ['root', 'simp'],
+            }
+          end
+          it {
+            is_expected.to compile
+            is_expected.to contain_concat_fragment("oath_exclude_user_root").with_content(<<-EOM.gsub(/^\s+/,'')
+              root\n
+            EOM
+            )
+            is_expected.to contain_concat_fragment("oath_exclude_user_simp").with_content(<<-EOM.gsub(/^\s+/,'')
+              simp\n
+            EOM
+            )
+            is_expected.to contain_concat_fragment("oath_exclude_group_root").with_content(<<-EOM.gsub(/^\s+/,'')
+              root\n
+            EOM
+            )
+            is_expected.to contain_concat_fragment("oath_exclude_group_simp").with_content(<<-EOM.gsub(/^\s+/,'')
+              simp\n
+            EOM
+            )
+          }
+        end
 
         good_pin  = ['"-"','"+"','1234','12345678']
         good_user = ['root','s1_mp-simP']

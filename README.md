@@ -93,7 +93,7 @@ For implementation without the corresponding simp modules, the follwing
 code can be added to most pam stacks.
 
 **WARNING:** Modifying the PAM stack is very dangerous and should not be done on
-a production system. Please take appropriate care to not lock yourself out of
+a production system without prior testing. Please take appropriate care to not lock yourself out of
 the system you are modifying.
 
 ```

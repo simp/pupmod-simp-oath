@@ -20,6 +20,16 @@
 # @param package_ensure
 #   Sets the value for resource => package, key => ensure.
 #
+# @param oath_exclude_users
+#   Optional array that will enter each array member as a user in the 
+#   exclude_users.oath file, keeping them from needing oath 2FA when configured
+#   for other users. 
+#
+# @param oath_exclude_groups
+#   Optional array that will enter each array member as a group in the 
+#   exclude_groups.oath file, keeping members of these groups from needing 
+#   oath 2FA when configured for other users. 
+#
 # @param oath_users
 #   `Hash` of users processed to create the users.oath file required by the
 #   pam_oath.so module.
@@ -47,7 +57,9 @@ class oath (
   Boolean                $oath           = simplib::lookup('simp_options::oath', { 'default_value' => false }),
   Boolean                $pam            = simplib::lookup('simp_options::pam', { 'default_value' => true }),
   Simplib::PackageEnsure $package_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present'}),
-  Optional[Hash]         $oath_users     = undef
+  Optional[Hash]         $oath_users     = undef,
+  Optional[Array]        $oath_exclude_users = undef,
+  Optional[Array]        $oath_exclude_groups = undef
 ) {
   include '::oath::oathtool_install'
 

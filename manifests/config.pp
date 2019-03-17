@@ -18,24 +18,45 @@ class oath::config {
     seltype => 'var_auth_t',
   }
 
-  file { '/etc/liboath/exclude_users.oath':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    seluser => 'system_u',
-    seltype => 'var_auth_t',
-    source  => "puppet:///modules/${module_name}/etc/liboath/exclude_users.oath",
+  if $oath::oath_exclude_users {
+    concat { '/etc/liboath/exclude_users.oath':
+      owner          => 'root',
+      group          => 'root',
+      mode           => '0600',
+      ensure_newline => true,
+      warn           => false,
+      seluser        => 'system_u',
+      seltype        => 'var_auth_t',
+    }
+    $oath::oath_exclude_users.each |$user_name| {
+      oath::config::exclude_user {
+        "exclude_user_$user_name": user => $user_name,
+      }
+    }
+  }
+  else {
+    warning('oath::oath_exclude_users was left undefined! Puppet will not be managing this essential file!')
   }
 
-  file { '/etc/liboath/exclude_groups.oath':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    seluser => 'system_u',
-    seltype => 'var_auth_t',
-    source  => "puppet:///modules/${module_name}/etc/liboath/exclude_groups.oath",
+  if $oath::oath_exclude_groups {
+    concat { '/etc/liboath/exclude_groups.oath':
+      owner          => 'root',
+      group          => 'root',
+      mode           => '0600',
+      ensure_newline => true,
+      warn           => false,
+      seluser        => 'system_u',
+      seltype        => 'var_auth_t',
+    }
+
+    $oath::oath_exclude_groups.each |$group_name| {
+      oath::config::exclude_group {
+        "exclude_group_$group_name": group => $group_name,
+      }
+    }
+  }
+  else {
+    warning('oath::oath_exclude_groups was left undefined! Puppet will not be managing this essential file!')
   }
 
   if $oath::oath_users {
