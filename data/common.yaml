@@ -1,0 +1,31 @@
+---
+# This is an example configuration of oath_users. Secret keys should
+# be immediately changed on a production system!
+#
+# Secret keys should follow RFC 6238 guidelines specified
+# in section 5.1
+#
+#   As indicated in the algorithm requirement section, keys SHOULD be
+#   chosen at random or using a cryptographically strong pseudorandom
+#   generator properly seeded with a random value.
+#
+#   Keys SHOULD be of the length of the HMAC output to facilitate
+#   interoperability.
+#
+# Specifics on allowed types can be found in `manifests/config/user.pp`
+
+oath::oath_exclude_users:
+  - root
+  - simp
+
+oath::oath_exclude_groups:
+  - root
+
+oath::oath_users:
+  defaults:
+    token_type: 'HOTP/T30/6'
+    pin: '-'
+  root:
+    secret_key: '000001'
+  simp:
+    secret_key: '000001'

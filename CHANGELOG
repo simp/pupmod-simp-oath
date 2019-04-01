@@ -1,0 +1,6 @@
+* Mon Apr 01 2019 Zach <turtles.be.the.best@gmail.com> - 0.1.0-0
+- Added pam_oath.so configuration code
+- Added strict type matching of oath::oath_users hieradata
+- Created Rspec tests checking correct catalog creation
+- Skeleton acceptance test created (and working)
+- Updated documentation to reflect current state of the module
