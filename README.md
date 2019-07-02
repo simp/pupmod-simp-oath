@@ -6,32 +6,38 @@
 
 #### Table of Contents
 
-1. [Description](#description)
-2. [Setup - The basics of getting started with oath](#setup)
-    * [What oath affects](#what-oath-affects)
-    * [Beginning with oath](#beginning-with-oath)
-3. [Usage - Configuration options and additional functionality](#usage)
-4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
-    * [Acceptance Tests - Beaker env variables](#acceptance-tests)
+<!-- vim-markdown-toc GFM -->
+
+* [Description](#description)
+  * [This is a SIMP module](#this-is-a-simp-module)
+* [Setup](#setup)
+  * [What oath affects](#what-oath-affects)
+  * [Beginning with oath](#beginning-with-oath)
+* [Usage](#usage)
+* [Limitations](#limitations)
+* [Development](#development)
+  * [Acceptance tests](#acceptance-tests)
+
+<!-- vim-markdown-toc -->
 
 ## Description
 
-By default, this module will only install oathtool, a command line utility for
-generating one-time passwords.
+By default, this module will only install `oathtool`, a command line utility
+for generating one-time passwords.
 
-Optionally, this module will install the pam_oath and liboath packages from epel
-and configure them. In this case, this module will manage the configurtion for
-these packages, including users, keys and exclusions.
+Optionally, this module will install the `pam_oath` and `liboath` packages from
+EPEL and configure them. In this case, this module will manage the
+configuration for these packages, including users, keys and exclusions.
+
+See [REFERENCE.md](REFERENCE.md) for more details.
 
 ### This is a SIMP module
 
-This module is a component of the [System Integrity Management
-Platform](https://simp-project.com), a
-compliance-management framework built on Puppet.
+This module is a component of the [System Integrity Management Platform](https://simp-project.com),
+a compliance-management framework built on Puppet.
 
-If you find any issues, they may be submitted to our [bug
-tracker](https://simp-project.atlassian.net/).
+If you find any issues, they may be submitted to our
+[bug tracker](https://simp-project.atlassian.net/).
 
 This module is optimally designed for use within a larger SIMP ecosystem, but
 it can be used independently:
@@ -48,20 +54,20 @@ it can be used independently:
 
 ### What oath affects
 
-If configured to install pam_oath, will install the following packages
+If configured to install `pam_oath`, will install the following packages
 
  * `pam_oath`
     Will add `/usr/lib64/security/pam_oath.so`
  * `liboath`
- * `pam` (A dependency of pam_oath)
-
+ * `pam` (A dependency of `pam_oath`)
 
 Will manage files in `/etc/liboath`
 
-**WARNING:** While this module will not edit the pam stack, it will manage the
-users and keys _required_ for `pam_oath.so` module functionality. If the pam stack is
-modified to utilize this module, only users in `/etc/liboath/users.oath` or
-those who fall under an exclude will be able to authenticate.
+**WARNING:** While this module will not edit the PAM stack, it will manage the
+users and keys _required_ for `pam_oath.so` module functionality. If the PAM
+stack is modified to utilize this module, only users in
+`/etc/liboath/users.oath` or those who fall under an exclude will be able to
+authenticate.
 
 
 ### Beginning with oath
@@ -75,41 +81,42 @@ include 'oath'
 ```puppet
 include 'oath'
 ```
-For anything greater than simple installation of oathtool, either
+For anything other than a simple installation of `oathtool`, either
 `simp_options::oath` needs to be set to `true` or `oath::pam_oath` needs to be
-overriden to true. `simp_options::oath` is a global catalyst indicating to
-other simp modules (pupmod-simp-ssh and pupmod-simp-pam) that they should
-add pam_oath to their respective pam stacks (system-auth and sshd). On the
-other hand, just enabling `oath::pam_oath` will tell oath to install
-`pam_oath` and `liboath` from the epel_release repository, as well as
-write the appropriate configuration files to the `/etc/liboath/` directory.
+overridden to true. `simp_options::oath` is a global catalyst indicating to
+other simp modules (pupmod-simp-ssh and pupmod-simp-pam) that they should add
+pam_oath to their respective pam stacks (system-auth and sshd). On the other
+hand, just enabling `oath::pam_oath` will tell oath to install `pam_oath` and
+`liboath` from the `epel_release` repository, as well as write the appropriate
+configuration files to the `/etc/liboath/` directory.
 
-A default list of users for which totp keys are configured is defined in
+A default list of users for which TOTP keys are configured is defined in
 `data/common.yaml` for the module. More details about this can be found in the
 documentation of `manifests/config.pp`. This can be modified in place or
-overriden in puppet or hiera.
+overridden in puppet or Hiera.
 
-For implementation without the corresponding simp modules, the follwing
-code can be added to most pam stacks.
+For implementation without the corresponding simp modules, the following code
+can be added to most PAM stacks.
 
-**WARNING:** Modifying the PAM stack is very dangerous and should not be done on
-a production system without prior testing. Please take appropriate care to not lock yourself out of
-the system you are modifying.
+**WARNING:** Modifying the PAM stack is very dangerous and should not be done
+on a production system without prior testing. Please take appropriate care to
+not lock yourself out of the system you are modifying.
 
 ```
-auth     [success=3 default=ignore] pam_listfile.so item=group sense=allow file=/etc/liboath/exclude_groups.oath
-auth     [success=2 default=ignore] pam_listfile.so item=user sense=allow file=/etc/liboath/exclude_users.oath
-auth     [success=1 default=bad]    pam_oath.so usersfile=/etc/liboath/users.oath window=1
-auth     requisite     pam_deny.so
+auth [success=3 default=ignore] pam_listfile.so item=group sense=allow file=/etc/liboath/exclude_groups.oath
+auth [success=2 default=ignore] pam_listfile.so item=user sense=allow file=/etc/liboath/exclude_users.oath
+auth [success=1 default=bad] pam_oath.so usersfile=/etc/liboath/users.oath window=1
+auth requisite pam_deny.so
 ```
 
 ## Limitations
 
-Currently, while the pam_oath package supports HOTP as well as TOTP, this module
-only supports TOTP configuration. HOTP can be configured to work by setting
-`oath::oath_users` to undef, which will lead to `/etc/liboath/users.oath` no
-longer being managed by puppet. This keeps the last HOTP code from being
-overwritten, as pam_oath uses the config file to keep track of this data.
+Currently, while the `pam_oath` package supports HOTP as well as TOTP, this
+module only supports TOTP configuration. HOTP can be configured to work by
+setting `oath::oath_users` to `undef`, which will lead to
+`/etc/liboath/users.oath` no longer being managed by puppet. This keeps the
+last HOTP code from being overwritten, as `pam_oath` uses the config file to
+keep track of this data.
 
 SIMP Puppet modules are generally intended for use on Red Hat Enterprise Linux
 and compatible distributions, such as CentOS. Please see the
@@ -121,6 +128,7 @@ supported operating systems, Puppet versions, and module dependencies.
 Please read our [Contribution Guide](http://simp-doc.readthedocs.io/en/stable/contributors_guide/index.html).
 
 ### Acceptance tests
+
 As use of this module by itself should not affect the operation of a system,
 this module contains only a basic acceptance test. The spec tests are much
 more representative of the functionality of this module.

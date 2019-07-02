@@ -1,3 +1,8 @@
+* Tue Jul 02 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 0.1.1-0
+- Updated README.md
+- Created REFERENCE.md
+- Support puppetlabs-stdlib 6
+
 * Mon Apr 01 2019 Zach <turtles.be.the.best@gmail.com> - 0.1.0-0
 - Added pam_oath.so configuration code
 - Added strict type matching of oath::oath_users hieradata
