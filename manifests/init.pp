@@ -54,11 +54,11 @@
 # @author https://github.com/simp/pupmod-simp-oath/graphs/contributors
 #
 class oath (
-  Boolean                $oath           = simplib::lookup('simp_options::oath', { 'default_value' => false }),
-  Boolean                $pam            = simplib::lookup('simp_options::pam', { 'default_value' => true }),
-  Simplib::PackageEnsure $package_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present'}),
-  Optional[Hash]         $oath_users     = undef,
-  Optional[Array]        $oath_exclude_users = undef,
+  Boolean                $oath                = simplib::lookup('simp_options::oath', { 'default_value' => false }),
+  Boolean                $pam                 = simplib::lookup('simp_options::pam', { 'default_value' => true }),
+  Simplib::PackageEnsure $package_ensure      = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present'}),
+  Optional[Hash]         $oath_users          = undef,
+  Optional[Array]        $oath_exclude_users  = undef,
   Optional[Array]        $oath_exclude_groups = undef
 ) {
   include '::oath::oathtool_install'
