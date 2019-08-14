@@ -1,6 +1,6 @@
 {
   "name": "simp-oath",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "https://github.com/simp/pupmod-simp-oath/graphs/contributors",
   "summary": "Installation and config for pam_oath rpm",
   "license": "Apache-2.0",
@@ -15,7 +15,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">= 4.0.0 < 6.0.0"
+      "version_requirement": ">= 4.0.0 < 7.0.0"
     },
     {
       "name": "simp/simplib",
