@@ -55,7 +55,6 @@ describe 'oath' do
         good_type = ['HOTP','HOTP/T30','HOTP/T60','HOTP/T30/6','HOTP/T3022222/121212','HOTP/6']
         good_key  = ['1234','aasdf1234k']
         bad_pin   = ['a','""']
-        bad_user  = ['bad user','b&d_user','bad>user']
         bad_type  = ['TOTP','HOTP/','HOTP/T','HOTP/T30/','']
         bad_key   = ['12345']
         good_pin.each { |pin|
@@ -157,18 +156,6 @@ describe 'oath' do
             }
           }
         }
-        context "Should not compile with bad users" do
-          bad_user.each { |user|
-            let(:params) do
-              {
-                'oath'  => true,
-                'pam'   => true,
-                'oath_users' => JSON.parse(%Q[{"#{user}": {"token_type": "HOTP", "pin": 1234, "secret_key": "1212"}}])
-              }
-            end
-            it { is_expected.to_not compile }
-          }
-        end
         context "Should not compile with bad type" do
           bad_type.each { |token_type|
             let(:params) do

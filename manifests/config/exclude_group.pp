@@ -6,7 +6,7 @@
 define oath::config::exclude_group (
   Pattern[/^[a-zA-Z0-9\-_]+(\s+)?$/]   $group,
 ) {
-  include '::oath::config'
+  include 'oath::config'
 
   $_separator = '_'
   $_group = strip($group)

@@ -15,7 +15,7 @@ class oath::config {
     owner   => 'root',
     group   => 'root',
     seluser => 'system_u',
-    seltype => 'var_auth_t',
+    seltype => 'var_auth_t'
   }
 
   if $oath::oath_exclude_users {
@@ -26,7 +26,7 @@ class oath::config {
       ensure_newline => true,
       warn           => false,
       seluser        => 'system_u',
-      seltype        => 'var_auth_t',
+      seltype        => 'var_auth_t'
     }
     $oath::oath_exclude_users.each |$user_name| {
       oath::config::exclude_user {
@@ -46,12 +46,12 @@ class oath::config {
       ensure_newline => true,
       warn           => false,
       seluser        => 'system_u',
-      seltype        => 'var_auth_t',
+      seltype        => 'var_auth_t'
     }
 
     $oath::oath_exclude_groups.each |$group_name| {
       oath::config::exclude_group {
-        "exclude_group_$group_name": group => $group_name,
+        "exclude_group_$group_name": group => $group_name
       }
     }
   }
@@ -66,9 +66,11 @@ class oath::config {
       mode           => '0600',
       ensure_newline => true,
       warn           => true,
+      show_diff      => false,
       seluser        => 'system_u',
-      seltype        => 'var_auth_t',
+      seltype        => 'var_auth_t'
     }
+
     # Checks for a 'defaults' user and interprets as default settings,
     # stripping off 'defaults' from the rest of the users
     if $oath::oath_users['defaults'].is_a(Hash) {

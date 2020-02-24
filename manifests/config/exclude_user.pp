@@ -6,7 +6,7 @@
 define oath::config::exclude_user (
   Pattern[/^[a-zA-Z0-9\-_]+(\s+)?$/]   $user,
 ) {
-  include '::oath::config'
+  include 'oath::config'
 
   $_separator = '_'
   $_user = strip($user)
