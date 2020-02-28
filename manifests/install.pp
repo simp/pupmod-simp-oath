@@ -12,7 +12,7 @@ class oath::install {
   if $facts['os']['release']['major'] == '6' {
     file { '/lib64/security/pam_oath.so':
       ensure => 'link',
-      target => '/usr/lib64/security/pam_oath.so',
+      target => '/usr/lib64/security/pam_oath.so'
     }
   }
 }

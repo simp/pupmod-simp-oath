@@ -21,12 +21,12 @@
 #   one-time password generators)
 #
 define oath::config::user (
-  Array[Pattern[/^[a-zA-Z0-9\-_]+(\s+)?$/]]   $user,
+  Array[String[1]]                            $user,
   Pattern[/^HOTP((\/T\d+)?(\/\d+)?)(\s+)?$/]  $token_type,
   Variant[Enum['-','+'], Integer[0,99999999]] $pin,
   Pattern[/^(..)+(\s+)?$/]                    $secret_key
 ) {
-  include '::oath::config'
+  include 'oath::config'
 
   $_separator = '_'
   $_name = strip(regsubst($name, '/', '_'))

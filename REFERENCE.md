@@ -155,7 +155,7 @@ The following parameters are available in the `oath::config::user` defined type.
 
 ##### `user`
 
-Data type: `Array[Pattern[/^[a-zA-Z0-9\-_]+(\s+)?$/]]`
+Data type: `Array[String[1]]`
 
 The username that will be affected
 

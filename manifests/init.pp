@@ -61,15 +61,15 @@ class oath (
   Optional[Array]        $oath_exclude_users  = undef,
   Optional[Array]        $oath_exclude_groups = undef
 ) {
-  include '::oath::oathtool_install'
+  include 'oath::oathtool_install'
 
   if ($pam and $oath){
     simplib::assert_metadata($module_name)
 
-    include '::oath::install'
-    include '::oath::config'
+    include 'oath::install'
+    include 'oath::config'
 
-    Class[ '::oath::install' ]
-    -> Class[ '::oath::config' ]
+    Class[ 'oath::install' ]
+    -> Class[ 'oath::config' ]
   }
 }

@@ -1,5 +1,7 @@
-* Thu Dec 19 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 0.2.0-0
+* Mon Feb 24 2020 Trevor Vaughan <tvaughan@onyxpoint.com> - 0.2.0-0
 - Add EL8 support
+- Code cleanup
+- Allow users to be any String value
 
 * Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 0.2.0-0
 - Support concat 6.x.
