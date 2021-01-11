@@ -11,16 +11,6 @@ HOSTS:
         gpgkeys:
           - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
 
-  oel6:
-    platform:   el-6-x86_64
-    box:        elastic/oel-6-x86_64
-    hypervisor: vagrant
-    yum_repos:
-      epel:
-        mirrorlist: 'https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch'
-        gpgkeys:
-          - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
-
   oel8:
     platform:   el-8-x86_64
     box:        generic/oracle8
