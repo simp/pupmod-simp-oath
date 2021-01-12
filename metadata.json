@@ -1,6 +1,6 @@
 {
   "name": "simp-oath",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "https://github.com/simp/pupmod-simp-oath/graphs/contributors",
   "summary": "Installation and config for pam_oath rpm",
   "license": "Apache-2.0",
@@ -30,7 +30,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "6",
         "7",
         "8"
       ]
@@ -38,7 +37,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "6",
         "7",
         "8"
       ]
@@ -46,7 +44,6 @@
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "6",
         "7",
         "8"
       ]
