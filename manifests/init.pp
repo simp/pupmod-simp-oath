@@ -48,7 +48,7 @@
 #     user:
 #       secret_key: 'my_secret_key'
 #     other_user:
-#       pin: '1234' # fields in user with override defaults
+#       pin: 1234      # fields in user with override defaults
 #       secret_key: 'secret_key_for_other_user'
 #
 # @author https://github.com/simp/pupmod-simp-oath/graphs/contributors
