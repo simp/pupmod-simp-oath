@@ -1,12 +1,12 @@
 ---
 fixtures:
   repositories:
-    compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
-    concat: https://github.com/simp/puppetlabs-concat
-    simplib: https://github.com/simp/pupmod-simp-simplib
+    compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup.git
+    concat: https://github.com/simp/puppetlabs-concat.git
+    simplib: https://github.com/simp/pupmod-simp-simplib.git
     sshkeys_core:
       repo: https://github.com/simp/pupmod-puppetlabs-sshkeys_core.git
       puppet_version: ">= 6.0.0"
-    stdlib: https://github.com/simp/puppetlabs-stdlib
+    stdlib: https://github.com/simp/puppetlabs-stdlib.git
   symlinks:
     oath: "#{source_dir}"
