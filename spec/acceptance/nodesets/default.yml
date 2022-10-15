@@ -5,12 +5,13 @@ HOSTS:
     platform:   el-7-x86_64
     box:        centos/7
     hypervisor: vagrant
+
   el8:
     platform:   el-8-x86_64
-    box:        generic/centos8
+    box:        generic/centos8s
     hypervisor: vagrant
 
 CONFIG:
   log_level: verbose
   type: aio
-  vagrant_memsize: 256
+  vagrant_cpus: 2
