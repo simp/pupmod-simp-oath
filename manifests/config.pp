@@ -30,7 +30,7 @@ class oath::config {
     }
     $oath::oath_exclude_users.each |$user_name| {
       oath::config::exclude_user {
-        "exclude_user_$user_name": user => $user_name,
+        "exclude_user_${user_name}": user => $user_name,
       }
     }
   }
@@ -51,7 +51,7 @@ class oath::config {
 
     $oath::oath_exclude_groups.each |$group_name| {
       oath::config::exclude_group {
-        "exclude_group_$group_name": group => $group_name
+        "exclude_group_${group_name}": group => $group_name
       }
     }
   }
