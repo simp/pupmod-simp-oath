@@ -143,7 +143,17 @@ describe 'oath' do
                     {
                       'oath'  => true,
                       'pam'   => true,
-                      'oath_users' => JSON.parse(%({"defaults": {"token_type": "HOTP"}, "#{user}": {"token_type": "#{token_type}", "pin": #{pin}, "secret_key": "#{user_key}"}, "test_user": {"pin": 1212, "secret_key": "123412" }}))
+                      'oath_users' => JSON.parse(
+                        <<~JSON_DATA,
+                        {
+                          "defaults": {"token_type": "HOTP"},
+                          "#{user}": {"token_type": "#{token_type}",
+                          "pin": #{pin},
+                          "secret_key": "#{user_key}"},
+                          "test_user": {"pin": 1212, "secret_key": "123412" }
+                        }
+                      JSON_DATA
+                      )
                     }
                   end
 
