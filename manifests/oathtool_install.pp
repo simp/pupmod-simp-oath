@@ -6,5 +6,5 @@
 class oath::oathtool_install {
   assert_private()
 
-  package { 'oathtool': ensure  => $::oath::package_ensure }
+  package { 'oathtool': ensure => $::oath::package_ensure }
 }
