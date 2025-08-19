@@ -20,13 +20,13 @@ describe 'oath' do
     it { is_expected.to contain_package('liboath') }
     it { is_expected.to contain_package('pam_oath') }
     it {
-      is_expected.to contain_file('/etc/liboath').with({
-                                                         'ensure' => 'directory',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'seluser' => 'system_u',
-      'seltype' => 'var_auth_t',
-                                                       })
+      is_expected.to contain_file('/etc/liboath').with(
+        'ensure'  => 'directory',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'seluser' => 'system_u',
+        'seltype' => 'var_auth_t',
+      )
     }
   end
 
@@ -46,8 +46,8 @@ describe 'oath' do
         context 'oath class with oath enabled users undef' do
           let(:params) do
             {
-              'oath' => true,
-            'oath_users' => :undef,
+              'oath'       => true,
+              'oath_users' => :undef,
             }
           end
 
@@ -57,7 +57,7 @@ describe 'oath' do
         context 'oath class with oath enabled users undef' do
           let(:params) do
             {
-              'oath' => true
+              'oath' => true,
             }
           end
 
@@ -73,7 +73,7 @@ describe 'oath' do
         {
           os: {
             family: 'Solaris',
-            name: 'Nexenta'
+            name: 'Nexenta',
           }
         }
       end

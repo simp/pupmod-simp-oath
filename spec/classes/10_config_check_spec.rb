@@ -13,8 +13,8 @@ describe 'oath' do
           let(:params) do
             {
               'oath_users' => :undef,
-              'oath' => true,
-              'pam' => true,
+              'oath'       => true,
+              'pam'        => true,
             }
           end
 
@@ -24,9 +24,9 @@ describe 'oath' do
         context 'Should compile parameters exclude arrays defined' do
           let(:params) do
             {
-              'oath' => true,
-              'pam' => true,
-              'oath_exclude_users' => ['root', 'simp'],
+              'oath'                => true,
+              'pam'                 => true,
+              'oath_exclude_users'  => ['root', 'simp'],
               'oath_exclude_groups' => ['root', 'simp'],
             }
           end
@@ -68,7 +68,7 @@ describe 'oath' do
                     {
                       'oath' => true,
                       'pam' => true,
-                      'oath_users' => JSON.parse(%({"#{user}": {"token_type": "#{token_type}", "pin": #{pin}, "secret_key": "#{user_key}"}}))
+                      'oath_users' => JSON.parse(%({"#{user}": {"token_type": "#{token_type}", "pin": #{pin}, "secret_key": "#{user_key}"}})),
                     }
                   end
 
@@ -91,9 +91,9 @@ describe 'oath' do
               context "Should compile and use defaults #{token_type}\t#{user}\t1337\t#{user_key}" do
                 let(:params) do
                   {
-                    'oath'  => true,
-                    'pam'   => true,
-                    'oath_users' => JSON.parse(%({"defaults": { "pin": 1337 }, "#{user}": {"token_type": "#{token_type}", "secret_key": "#{user_key}"}}))
+                    'oath'       => true,
+                    'pam'        => true,
+                    'oath_users' => JSON.parse(%({"defaults": { "pin": 1337 }, "#{user}": {"token_type": "#{token_type}", "secret_key": "#{user_key}"}})),
                   }
                 end
 
@@ -115,9 +115,9 @@ describe 'oath' do
                 context "Should compile and override default values #{token_type}\t#{user}\t#{pin}\t#{user_key}" do
                   let(:params) do
                     {
-                      'oath' => true,
-                    'pam' => true,
-                    'oath_users' => JSON.parse(%({"defaults": {"token_type": "HOTP", "pin": 1337 }, "#{user}": {"token_type": "#{token_type}", "pin": #{pin}, "secret_key": "#{user_key}"}}))
+                      'oath'       => true,
+                      'pam'        => true,
+                      'oath_users' => JSON.parse(%({"defaults": {"token_type": "HOTP", "pin": 1337 }, "#{user}": {"token_type": "#{token_type}", "pin": #{pin}, "secret_key": "#{user_key}"}})),
                     }
                   end
 
@@ -141,8 +141,8 @@ describe 'oath' do
                 context 'Should compile parameters two users and a default' do
                   let(:params) do
                     {
-                      'oath'  => true,
-                      'pam'   => true,
+                      'oath'       => true,
+                      'pam'        => true,
                       'oath_users' => JSON.parse(
                         <<~JSON_DATA,
                         {
@@ -153,7 +153,7 @@ describe 'oath' do
                           "test_user": {"pin": 1212, "secret_key": "123412" }
                         }
                       JSON_DATA
-                      )
+                      ),
                     }
                   end
 
@@ -178,9 +178,9 @@ describe 'oath' do
           bad_type.each do |token_type|
             let(:params) do
               {
-                'oath'  => true,
-                'pam'   => true,
-                'oath_users' => JSON.parse(%({"root": {"token_type": "#{token_type}", "pin": 1234, "secret_key": "1212"}}))
+                'oath'       => true,
+                'pam'        => true,
+                'oath_users' => JSON.parse(%({"root": {"token_type": "#{token_type}", "pin": 1234, "secret_key": "1212"}})),
               }
             end
             it { is_expected.not_to compile }
@@ -190,9 +190,9 @@ describe 'oath' do
           bad_pin.each do |pin|
             let(:params) do
               {
-                'oath'  => true,
-                'pam'   => true,
-                'oath_users' => JSON.parse(%({"root": {"token_type": "HOTP", "pin": #{pin}, "secret_key": "1234"}}))
+                'oath'       => true,
+                'pam'        => true,
+                'oath_users' => JSON.parse(%({"root": {"token_type": "HOTP", "pin": #{pin}, "secret_key": "1234"}})),
               }
             end
             it { is_expected.not_to compile }
