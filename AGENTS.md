@@ -11,71 +11,71 @@ command-line utility unconditionally, and — when both PAM and OATH are enabled
 files under `/etc/liboath` (`users.oath`, `exclude_users.oath`,
 `exclude_groups.oath`). Those files are assembled from Hiera data via `concat`
 fragments, with the correct SELinux contexts applied so `pam_oath` can read
-them (RPM ships no defaults) (`manifests/config.pp:1-19`).
+them (RPM ships no defaults) (`manifests/config.pp`).
 
 The module is conservative about turning itself on. The main class installs
 only `oathtool` unless **both** `$pam` and `$oath` are true; only then does it
-pull in the package install and config classes (`manifests/init.pp:64-74`).
+pull in the package install and config classes (`manifests/init.pp`).
 The intended enable path is the global catalyst `simp_options::oath: true` in
-Hiera (`manifests/init.pp:57`).
+Hiera (`manifests/init.pp`).
 
 ### Business logic
 
-- **`oath` (`manifests/init.pp:56-75`)** — Public entry class (not
+- **`oath` (`manifests/init.pp`)** — Public entry class (not
   `assert_private()`'d; consumers `include 'oath'`). Parameters
-  (`init.pp:56-63`):
+  (`init.pp`):
   - `$oath` (`Boolean`) — master switch for the `pam_oath`/`liboath` side.
     Defaults to `simplib::lookup('simp_options::oath', { 'default_value' => false })`
-    (`init.pp:57`).
+    (`init.pp`).
   - `$pam` (`Boolean`) — whether PAM is configured on the system; `pam_oath` is
     only installed when this is true. Defaults to
     `simplib::lookup('simp_options::pam', { 'default_value' => true })`
-    (`init.pp:58`). Docstring warns that forcing this true will pull in PAM as a
-    dependency of `pam_oath` (`init.pp:17-18`).
+    (`init.pp`). Docstring warns that forcing this true will pull in PAM as a
+    dependency of `pam_oath` (`init.pp`).
   - `$package_ensure` (`Simplib::PackageEnsure`) — ensure value for every
     package. Defaults to
     `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present' })`
-    (`init.pp:59`).
+    (`init.pp`).
   - `$oath_users` (`Optional[Hash]`, default `undef`) — user→token map that
-    drives `users.oath`; when `undef`, that file is not managed (`init.pp:60`).
+    drives `users.oath`; when `undef`, that file is not managed (`init.pp`).
   - `$oath_exclude_users` (`Optional[Array]`, default `undef`) — drives
-    `exclude_users.oath` (`init.pp:61`).
+    `exclude_users.oath` (`init.pp`).
   - `$oath_exclude_groups` (`Optional[Array]`, default `undef`) — drives
-    `exclude_groups.oath` (`init.pp:62`).
+    `exclude_groups.oath` (`init.pp`).
 
-  Control flow: always `include 'oath::oathtool_install'` (`init.pp:64`). If
+  Control flow: always `include 'oath::oathtool_install'` (`init.pp`). If
   `$pam and $oath`, call `simplib::assert_metadata($module_name)`, then
   `include 'oath::install'` and `include 'oath::config'`, ordered
-  `Class['oath::install'] -> Class['oath::config']` (`init.pp:66-74`).
+  `Class['oath::install'] -> Class['oath::config']` (`init.pp`).
 
-- **`oath::oathtool_install` (`manifests/oathtool_install.pp:6-10`)** — private
+- **`oath::oathtool_install` (`manifests/oathtool_install.pp`)** — private
   (`assert_private()`); `package { 'oathtool' }` at `$oath::package_ensure`.
 
-- **`oath::install` (`manifests/install.pp:6-12`)** — private
+- **`oath::install` (`manifests/install.pp`)** — private
   (`assert_private()`); `package { 'liboath' }` and `package { 'pam_oath' }` at
   `$oath::package_ensure`.
 
-- **`oath::config` (`manifests/config.pp:9-103`)** — private
+- **`oath::config` (`manifests/config.pp`)** — private
   (`assert_private()`). Creates `/etc/liboath` as a directory with
-  `seluser => system_u`, `seltype => var_auth_t` (`config.pp:13-19`). For each
+  `seluser => system_u`, `seltype => var_auth_t` (`config.pp`). For each
   of the three managed files it creates a `concat` container (mode `0600`,
   same SELinux context) and iterates the corresponding Hiera value to declare
   fragment defines; when a value is `undef` it emits a `warning()` that the file
-  is **not** being managed rather than failing (`config.pp:21-102`). For
+  is **not** being managed rather than failing (`config.pp`). For
   `oath_users`, a `'defaults'` key in the hash is split out and applied as
-  per-resource defaults to `oath::config::user` (`config.pp:76-98`).
+  per-resource defaults to `oath::config::user` (`config.pp`).
 
-- **`oath::config::user` (`manifests/config/user.pp:23-43`)** — public define.
+- **`oath::config::user` (`manifests/config/user.pp`)** — public define.
   Validates `$user` (`Array[String[1]]`), `$token_type`
   (`Pattern[/^HOTP((\/T\d+)?(\/\d+)?)(\s+)?$/]`), `$pin`
   (`Variant[Enum['-','+'], Integer[0,99999999]]`), and `$secret_key`
-  (`Pattern[/^(..)+(\s+)?$/]` — even-length) (`config/user.pp:24-27`). Emits a
+  (`Pattern[/^(..)+(\s+)?$/]` — even-length) (`config/user.pp`). Emits a
   tab-separated `concat::fragment` into `/etc/liboath/users.oath`
-  (`config/user.pp:37-42`). `include 'oath::config'` at the top
-  (`config/user.pp:29`).
+  (`config/user.pp`). `include 'oath::config'` at the top
+  (`config/user.pp`).
 
-- **`oath::config::exclude_user` (`manifests/config/exclude_user.pp:6-20`)** and
-  **`oath::config::exclude_group` (`manifests/config/exclude_group.pp:6-20`)** —
+- **`oath::config::exclude_user` (`manifests/config/exclude_user.pp`)** and
+  **`oath::config::exclude_group` (`manifests/config/exclude_group.pp`)** —
   public defines; each validates its single name arg with
   `Pattern[/^[a-zA-Z0-9\-_]+(\s+)?$/]`, strips it, and writes a one-line
   `concat::fragment` into the respective exclude file.
@@ -85,28 +85,28 @@ Hiera (`manifests/init.pp:57`).
 - **`oathtool` is always installed; `pam_oath`/`liboath` are gated.** Including
   `oath` with defaults installs only `oathtool` — the PAM side requires both
   `$pam` (default true) and `$oath` (default false) to be true
-  (`init.pp:64-74`), so the effective default is "oathtool only." Set
+  (`init.pp`), so the effective default is "oathtool only." Set
   `simp_options::oath: true` to enable the rest.
 - **Missing Hiera → a warning, not managed files.** If `oath_users`,
   `oath_exclude_users`, or `oath_exclude_groups` are `undef`, `oath::config`
-  logs a `warning()` and does not manage that file (`config.pp:37-39,58-59,100-102`).
+  logs a `warning()` and does not manage that file (`config.pp`).
 - **The shipped `data/common.yaml` contains EXAMPLE secrets.** It defines
   `oath::oath_users` for `root`/`simp` with placeholder `secret_key: '000001'`
-  and excludes `root`/`simp` (`data/common.yaml:17-31`). The file itself warns
+  and excludes `root`/`simp` (`data/common.yaml`). The file itself warns
   these keys must be changed on a production system — do not treat them as real
   defaults.
 - **`secret_key` must be even length.** The `Pattern[/^(..)+(\s+)?$/]` type on
   `oath::config::user` enforces even length; odd-length keys can break OTP
-  generators (`config/user.pp:20-21,27`).
+  generators (`config/user.pp`).
 - **`'defaults'` is a reserved key in `oath_users`.** A `'defaults'` hash entry
   is not a user — it is stripped out and applied as resource defaults to the
-  remaining users (`config.pp:76-98`).
+  remaining users (`config.pp`).
 - **`simp/simp_options` is NOT a declared dependency** in `metadata.json`, yet
   the manifest consumes the `simp_options::*` seam via `simplib::lookup`
   (provided by `simp/simplib`). There is no `simp.optional_dependencies` block.
 - **Private classes are referenced with the legacy `$::oath::` top-scope
-  syntax** in `install.pp`/`oathtool_install.pp` (`install.pp:9-10`,
-  `oathtool_install.pp:9`) — match the surrounding style if editing there.
+  syntax** in `install.pp`/`oathtool_install.pp` (`install.pp`,
+  `oathtool_install.pp`) — match the surrounding style if editing there.
 - **`.fixtures.yml` pulls `sshkeys_core`** as a fixture even though nothing in
   `manifests/` uses it (`.fixtures.yml`) — likely a baseline leftover; it is not
   a runtime dependency.
@@ -116,11 +116,11 @@ Hiera (`manifests/init.pp:57`).
 This is the module's real business-logic seam (the natural target for a
 lookup-path unit test). All calls are in `manifests/init.pp`:
 
-| Line | Key | `default_value` |
+| File | Key | `default_value` |
 |------|-----|-----------------|
-| `init.pp:57` | `simp_options::oath` | `false` |
-| `init.pp:58` | `simp_options::pam` | `true` |
-| `init.pp:59` | `simp_options::package_ensure` | `'present'` |
+| `init.pp` | `simp_options::oath` | `false` |
+| `init.pp` | `simp_options::pam` | `true` |
+| `init.pp` | `simp_options::package_ensure` | `'present'` |
 
 Keep routing SIMP feature toggles through `simplib::lookup('simp_options::*', {
 'default_value' => ... })` with an explicit default rather than assuming
