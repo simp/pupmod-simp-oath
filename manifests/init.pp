@@ -56,20 +56,20 @@
 class oath (
   Boolean                $oath                = simplib::lookup('simp_options::oath', { 'default_value' => false }),
   Boolean                $pam                 = simplib::lookup('simp_options::pam', { 'default_value' => true }),
-  Simplib::PackageEnsure $package_ensure      = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present'}),
+  Simplib::PackageEnsure $package_ensure      = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present' }),
   Optional[Hash]         $oath_users          = undef,
   Optional[Array]        $oath_exclude_users  = undef,
   Optional[Array]        $oath_exclude_groups = undef
 ) {
   include 'oath::oathtool_install'
 
-  if ($pam and $oath){
+  if ($pam and $oath) {
     simplib::assert_metadata($module_name)
 
     include 'oath::install'
     include 'oath::config'
 
-    Class[ 'oath::install' ]
-    -> Class[ 'oath::config' ]
+    Class['oath::install']
+    -> Class['oath::config']
   }
 }
