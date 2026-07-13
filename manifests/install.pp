@@ -6,7 +6,6 @@
 class oath::install {
   assert_private()
 
-  package { 'liboath': ensure => $::oath::package_ensure }
-  package { 'pam_oath': ensure => $::oath::package_ensure }
-
+  package { 'liboath': ensure => $oath::package_ensure }
+  package { 'pam_oath': ensure => $oath::package_ensure }
 }
