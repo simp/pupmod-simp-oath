@@ -84,7 +84,7 @@ Data type: `Simplib::PackageEnsure`
 
 Sets the value for resource => package, key => ensure.
 
-Default value: `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present'})`
+Default value: `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'present' })`
 
 ##### <a name="-oath--oath_exclude_users"></a>`oath_exclude_users`
 
