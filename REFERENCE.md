@@ -12,9 +12,9 @@
 
 #### Private Classes
 
-* `oath::config`: This class is called from oath for pam_oath configuration. This class ensures files and directories have the correct selinux contexts to run 
+* `oath::config`: This class is called from oath for pam_oath configuration. This class ensures files and directories have the correct selinux contexts to run
 * `oath::install`: This class is called from oath for installation of packages required to implement one-time passwords as part of PAM authentication.
-* `oath::oathtool_install`: This class is called from oath for installation of the oathtool utility. This utility enables conversion of a secret key into an appropriate 
+* `oath::oathtool_install`: This class is called from oath for installation of the oathtool utility. This utility enables conversion of a secret key into an appropriate
 
 ### Defined types
 
@@ -200,4 +200,3 @@ Data type: `Pattern[/^(..)+(\s+)?$/]`
 
 Any continuous string of even length (odd length can break secret_key to
 one-time password generators)
-
